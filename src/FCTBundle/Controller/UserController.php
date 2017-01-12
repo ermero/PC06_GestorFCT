@@ -8,6 +8,7 @@ use FCTBundle\Entity\User;
 use FCTBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Entity\Author;
 
 class UserController extends Controller
 {
@@ -21,7 +22,10 @@ class UserController extends Controller
 
 
         $form->handleRequest($request);
-
+        //validación de formularios
+        $validator=$this->get('validator');
+        $errors= $validator->validate($user);
+        
 
         if($form->isSubmitted() && $form->isValid()){
         	$password=$this->get('security.password_encoder')
@@ -39,7 +43,7 @@ class UserController extends Controller
             return new Response("Usuario registrado!");
         }
 
-    	return $this->render('FCTBundle:User:register.html.twig', array("form"=>$form->createView() ));
+    	return $this->render('FCTBundle:User:register.html.twig', array("form"=>$form->createView()  ));
 
 
     }

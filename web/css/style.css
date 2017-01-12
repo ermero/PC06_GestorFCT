@@ -13,3 +13,8 @@ table{
 .principal{
 	font-weight: bold;
 }
+label+ul{
+	list-style-type: none;
+	color: red;
+	font-weight: bold;
+}

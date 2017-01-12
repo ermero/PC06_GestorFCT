@@ -4,6 +4,7 @@ namespace FCTBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -26,6 +27,15 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 32,
+     *      minMessage = "Debes introducir un usuario con mínimo de 4 caracteres",
+     *      maxMessage = "Debes introducir un usuario con máximo de 32 caracteres"
+     * )
+     * @Assert\NotBlank(
+     *     message="Debes rellenar el username"
+     * )
      */
     private $username;
 
@@ -33,6 +43,15 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * )
+     * @Assert\Regex(
+     *     pattern="/.+@.+\..+/",
+     *     match=true,
+     *     message="El email debe ser del tipo email@dominio.extension"
+     * )
+     * @Assert\NotBlank(
+     *     message="Debes rellenar el email"
+     * )
      */
     private $email;
 
@@ -53,6 +72,31 @@ class User implements UserInterface, \Serializable
     {
         return $this->id;
     }
+
+    /**
+    * @Assert\NotBlank(
+    *     message="Debes rellenar la contraseña"
+    * )
+    * @Assert\Regex(
+    *     pattern="/^.*[A-Z]+.*$/",
+    *     match=true,
+    *     message="La contraseña debe tener al menos una mayúscula"
+    * )
+    * @Assert\Regex(
+    *     pattern="/^.*[0-9].*$/",
+    *     match=true,
+    *     message="La contraseña debe tener numeros del 0 al 9"
+    * )
+     @Assert\Regex(
+    *     pattern="/^.*[a-z].*$/",
+    *     match=true,
+    *     message="La contraseña debe tener minúsculas"
+    * )
+    * @Assert\Length(
+    *      min = 8,
+    *      minMessage = "Debes introducir una contraseña de como mínimo de 8 caracteres"
+    * )
+    */
     private $plainPassword;
 
     public function getPlainPassword(){
